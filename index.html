@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dare Game</title>
+
+    <style>
+        :root {
+            --color-bg-primary: #0b0b0b;
+            --color-bg-secondary: #1a0f0f;
+
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #f5bcbc;
+
+            --color-accent-1: #ff1e1e;
+            --color-accent-2: #8b0000;
+
+            --color-border: rgba(255, 60, 60, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.75)),
+                url('wmremove-transformed.jpeg') no-repeat center/cover;
+
+            color: var(--color-text-primary);
+
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+
+            background: linear-gradient(135deg, #ff1a1a, #b30000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+        }
+
+        .user-selection {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .user-btn {
+
+            flex: 1;
+
+            padding: 1.5rem;
+
+            font-size: 1.25rem;
+
+            font-weight: 600;
+
+            border: 2px solid var(--color-border);
+
+            background: var(--color-bg-secondary);
+
+            color: var(--color-text-primary);
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            transition: all .3s ease;
+        }
+
+        .user-btn:hover {
+
+            transform: translateY(-3px);
+
+            border-color: #ff3b3b;
+
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.6);
+        }
+
+        .user-btn.active {
+
+            background: linear-gradient(135deg, #ff2a2a, #7a0000);
+
+            border: none;
+
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+
+        .dare-section {
+
+            text-align: center;
+
+            margin-bottom: 2rem;
+        }
+
+        .dare-btn {
+
+            padding: 1.25rem 3rem;
+
+            font-size: 1.5rem;
+
+            font-weight: 700;
+
+            border: none;
+
+            background: linear-gradient(135deg, #ff1a1a, #8b0000);
+
+            color: white;
+
+            border-radius: 50px;
+
+            cursor: pointer;
+
+            transition: all .3s ease;
+
+            box-shadow: 0 5px 25px rgba(255, 0, 0, 0.7);
+        }
+
+        .dare-btn:hover {
+
+            transform: scale(1.07);
+
+            box-shadow: 0 8px 35px rgba(255, 0, 0, 0.9);
+        }
+
+        .dare-btn:active {
+            transform: scale(.97);
+        }
+
+        .dare-btn:disabled {
+
+            opacity: .5;
+
+            cursor: not-allowed;
+        }
+
+        .dare-display {
+
+            background: rgba(20, 0, 0, .75);
+
+            border: 2px solid var(--color-border);
+
+            border-radius: 16px;
+
+            padding: 2rem;
+
+            min-height: 200px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            margin-top: 2rem;
+
+            opacity: 0;
+
+            transform: translateY(20px);
+
+            transition: all .4s ease;
+        }
+
+        .dare-display.show {
+
+            opacity: 1;
+
+            transform: translateY(0);
+        }
+
+        .dare-text {
+
+            font-size: 1.25rem;
+
+            line-height: 1.8;
+
+            color: var(--color-text-secondary);
+
+            opacity: 0;
+
+            transform: scale(.9);
+
+            transition: all .4s ease;
+        }
+
+        .dare-text.active {
+
+            color: white;
+
+            font-weight: 500;
+
+            opacity: 1;
+
+            transform: scale(1);
+        }
+
+        .current-user {
+
+            text-align: center;
+
+            margin-bottom: 1.5rem;
+
+            font-size: 1.1rem;
+
+            color: var(--color-text-secondary);
+
+            opacity: 0;
+
+            transform: translateY(10px);
+
+            transition: .3s ease;
+        }
+
+        .current-user.show {
+
+            opacity: 1;
+
+            transform: translateY(0);
+        }
+
+        .current-user span {
+
+            color: #ff2a2a;
+
+            font-weight: 600;
+        }
+
+        @media (max-width:640px) {
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .user-btn {
+                padding: 1.25rem;
+                font-size: 1.1rem;
+            }
+
+            .dare-btn {
+                padding: 1rem 2rem;
+                font-size: 1.25rem;
+            }
+
+            .dare-text {
+                font-size: 1.1rem;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🔥 Dare Game 🔥</h1>
+
+        <div class="user-selection">
+
+            <button class="user-btn" id="babyBtn" onclick="selectUser('Babyy')">Babyy</button>
+
+            <button class="user-btn" id="abhiBtn" onclick="selectUser('Abhi')">Abhi</button>
+
+        </div>
+
+        <div class="current-user" id="currentUser">
+            Select a player to start
+        </div>
+
+        <div class="dare-section">
+
+            <button class="dare-btn" id="dareBtn" onclick="getDare()" disabled>
+                Get Dare
+            </button>
+
+        </div>
+
+        <div class="dare-display" id="dareDisplay">
+
+            <p class="dare-text" id="dareText">
+                Click "Get Dare" to receive your challenge...
+            </p>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        let selectedUser = null;
+
+        const abhiOnlyDares = [
+            "Remove the other person's underwear with your teeth.",
+            "Spank their ass three times, then kiss the spot you just spanked.",
+            "Perform oral sex on them for exactly one minute.",
+            "Perform oral sex on them through their underwear for one minute."
+        ];
+
+        const sharedDares = [
+            "Give a sensual massage to their inner thighs, stopping just short of their genitals.",
+            "Kiss and nibble your way from their wrist to their shoulder.",
+            "Suck on their fingers one by one while maintaining intense eye contact.",
+            "Grind on them while you're both still wearing your underwear.",
+            "Blindfold them and tease them with feathers or a silk scarf all over their body.",
+            "Give them a hickey on a spot of their choice.",
+            "Describe in detail what you want to do to them later tonight.",
+            "Make out with them for two full minutes without stopping.",
+            "Take off their shirt using only one hand.",
+            "Tease them by going down on them, but stop right before they climax.",
+            "Tie their hands loosely with a scarf and kiss them all over their upper body.",
+            "Suck on their earlobe and neck until they're moaning.",
+            "Masturbate in front of each other, but you're not allowed to touch yourself until the other person says so.",
+            "Use your hands to explore every inch of their body, but you're only allowed to use your fingertips.",
+            "Kiss a trail from their neck down to their underwear, then kiss them back up without using your hands.",
+            "One person closes their eyes while the other uses their hands to write a secret dirty word on their back and they must guess it."
+        ];
+
+        function selectUser(user) {
+
+            selectedUser = user;
+
+            const babyBtn = document.getElementById("babyBtn");
+            const abhiBtn = document.getElementById("abhiBtn");
+            const dareBtn = document.getElementById("dareBtn");
+            const currentUser = document.getElementById("currentUser");
+            const dareText = document.getElementById("dareText");
+            const dareDisplay = document.getElementById("dareDisplay");
+
+            babyBtn.classList.remove("active");
+            abhiBtn.classList.remove("active");
+
+            if (user === "Babyy") {
+                babyBtn.classList.add("active");
+            }
+            else {
+                abhiBtn.classList.add("active");
+            }
+
+            currentUser.innerHTML = `Current player: <span>${user}</span>`;
+
+            dareBtn.disabled = false;
+
+            dareText.textContent = 'Click "Get Dare" to receive your challenge...';
+
+            dareText.classList.remove("active");
+            dareDisplay.classList.remove("show");
+
+            setTimeout(() => {
+                currentUser.classList.add("show");
+            }, 50);
+
+        }
+
+        function getDare() {
+
+            let darePool = [];
+
+            if (selectedUser === "Abhi") {
+                darePool = [...abhiOnlyDares, ...sharedDares];
+            }
+            else {
+                darePool = [...sharedDares];
+            }
+
+            const randomIndex = Math.floor(Math.random() * darePool.length);
+
+            const selectedDare = darePool[randomIndex];
+
+            const dareText = document.getElementById("dareText");
+            const dareDisplay = document.getElementById("dareDisplay");
+
+            dareText.textContent = selectedDare;
+
+            dareDisplay.classList.add("show");
+
+            setTimeout(() => {
+                dareText.classList.add("active");
+            }, 100);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
